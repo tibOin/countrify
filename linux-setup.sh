@@ -27,6 +27,8 @@ function checkTor {
   fi
 }
 
+checkTor
+
 echoOrange "Ensuring pip is up to date"
 sudo -H pip install --upgrade pip
 echoVert "Done."
