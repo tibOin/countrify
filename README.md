@@ -1,6 +1,17 @@
 # countrify
 Automatically start Tor Proxy to end in specific country.
 
+### Installation
+If Tor is not installed on your computer, don't worry!
+There are scripts to automate setup.
+
+Platforms :
++ Linux -> `./linux-setup.sh` or `bash linux-setup.sh`
++ macOS -> `bash macos-setup.sh`
+
+*Please ensure your terminal is in the countrify's root folder.*
+
+
 ### Usage
 `python countrify.py [countrycode]`
 
