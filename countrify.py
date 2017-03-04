@@ -111,7 +111,7 @@ def main():
             tor_process.kill()
             tor_process = startTorWithExitNodeIn(country)
 
-        socks5str = term.format('Socks5', term.Color.YELLOW)
+        socks5str = term.format('Socks', term.Color.YELLOW)
         hoststr   = term.format("localhost:" + str(SOCKS_PORT), term.Color.YELLOW)
         configstr = "You can now configure your browser to use {} proxy at {}".format(socks5str, hoststr)
         print term.format('Now it\'s up to you...\n', term.Attr.BOLD)
