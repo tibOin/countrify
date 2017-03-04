@@ -1,4 +1,4 @@
-import sys, io, webbrowser
+import os, sys, io, webbrowser
 import pycurl
 import stem.process
 from stem.util import term
@@ -111,18 +111,30 @@ def main():
             tor_process.kill()
             tor_process = startTorWithExitNodeIn(country)
 
-        socks5str = term.format('Socks', term.Color.YELLOW)
-        hoststr   = term.format("localhost:" + str(SOCKS_PORT), term.Color.YELLOW)
-        configstr = "You can now configure your browser to use {} proxy at {}".format(socks5str, hoststr)
-        print term.format('Now it\'s up to you...\n', term.Attr.BOLD)
-        print term.format(configstr, term.Color.GREEN)
-        print term.format("After configuring, reload the page automatically opened and check if infos are the same as above\n", term.Color.GREEN)
-        webbrowser.open('https://www.atagar.com/echo.php', new=2)
+        if sys.platform == 'darwin':
+            print term.format("Need root access to set up proxy", term.Color.YELLOW)
+            os.system('sudo networksetup -setsocksfirewallproxy WI-FI 127.0.0.1 9000 off')
+            os.system('sudo networksetup -setsocksfirewallproxystate WI-FI on')
+            print term.format("You can now browse internet through Tor", term.Color.GREEN)
+            print term.format("System proxy has been set up", term.Color.GREEN)
+        else:
+            socks5str = term.format('Socks', term.Color.YELLOW)
+            hoststr   = term.format("localhost:" + str(SOCKS_PORT), term.Color.YELLOW)
+            configstr = "You can now configure your browser to use {} proxy at {}".format(socks5str, hoststr)
+            print term.format('Now it\'s up to you...\n', term.Attr.BOLD)
+            print term.format(configstr, term.Color.GREEN)
+            print term.format("After configuring, reload the page automatically opened and check if infos are correct\n", term.Color.GREEN)
+
+        webbrowser.open('https://check.torproject.org', new=2)
 
         raw_input("Press Enter to close Tor...\r")
         print term.format('Killing Tor...', term.Color.RED)
         tor_process.kill()  # stops tor
         print term.format('Tor has been stopped', term.Color.GREEN)
-        print term.format('Remember to remove proxy configuration in your browser', term.Color.YELLOW)
+        if sys.platform == 'darwin':
+            os.system('sudo networksetup -setsocksfirewallproxystate WI-FI off')
+            print('System proxy has been disabled')
+        else:
+            print term.format('Remember to remove proxy configuration in your browser', term.Color.YELLOW)
 
 main()
